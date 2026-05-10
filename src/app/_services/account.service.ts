@@ -103,8 +103,16 @@ export class AccountService {
     const account = this.accountValue;
     if (!account || !account.jwtToken) return;
 
-    const jwtToken = JSON.parse(atob(account.jwtToken.split('.')[1]));
-    const expires = new Date(jwtToken.exp * 1000);
+    // Handle fake backend JWT (base64-encoded JSON without dots)
+    const tokenParts = account.jwtToken.split('.');
+    let jwtPayload: any;
+    try {
+      jwtPayload = JSON.parse(atob(tokenParts.length >= 2 ? tokenParts[1] : tokenParts[0]));
+    } catch {
+      return;
+    }
+
+    const expires = new Date(jwtPayload.exp * 1000);
     const timeout = expires.getTime() - Date.now() - (60 * 1000);
 
     if (timeout <= 0) return;
