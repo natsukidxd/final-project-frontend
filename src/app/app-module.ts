@@ -24,7 +24,8 @@ import { environment } from '@environments/environment';
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     // Fake backend provider disabled for live backend testing
-    // To re-enable: ...(environment.production ? [] : [fakeBackendProvider])
+    // To re-enable: 
+    ...(environment.production ? [] : [fakeBackendProvider])
   ],
   bootstrap: [App]
 })
