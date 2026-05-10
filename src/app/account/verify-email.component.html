@@ -1,9 +1,15 @@
-<h3 class="card-header">Verify Email</h3>
-<div class="card-body">
-  <div *ngIf="tokenStatus === TokenStatus.Validating">
-    <p>Validating token...</p>
+<div class="card">
+  <div class="card-header">
+    <h3 style="margin: 0; font-size: 1.15rem;">Verify Email</h3>
   </div>
-  <div *ngIf="tokenStatus === TokenStatus.Invalid">
-    <p>Verification failed, you can also verify your account using the <a routerLink="../forgot-password">forgot password</a> page.</p>
+  <div class="card-body">
+    <div *ngIf="tokenStatus === TokenStatus.Validating" class="text-center" style="padding: 1.5rem 0;">
+      <span class="spinner-border" style="width: 2rem; height: 2rem;" role="status"></span>
+      <p style="margin-top: 0.75rem; color: var(--text-muted);">Validating your email...</p>
+    </div>
+    <div *ngIf="tokenStatus === TokenStatus.Invalid" class="text-center" style="padding: 1rem 0;">
+      <p style="color: var(--danger);">Verification failed. You can also verify your account from the forgot password page.</p>
+      <a routerLink="../forgot-password" class="btn btn-primary" style="margin-top: 0.5rem;">Go to Forgot Password</a>
+    </div>
   </div>
 </div>

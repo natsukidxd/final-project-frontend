@@ -44,6 +44,10 @@ export class RegisterComponent implements OnInit {
     if (this.form.invalid) return;
 
     this.loading = true;
+
+    // Expose alertService for the fake backend's verification alert
+    (window as any).alertService = this.alertService;
+
     this.accountService.register(this.form.value)
       .pipe(first())
       .subscribe({
