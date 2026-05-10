@@ -1,10 +1,12 @@
 <div class="card">
-  <h4 class="card-header">Update Profile</h4>
+  <div class="card-header">
+    <h4 style="margin: 0; font-size: 1rem;">Update Profile</h4>
+  </div>
   <div class="card-body">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="mb-3">
         <label class="form-label">Title</label>
-        <select formControlName="title" class="form-control"
+        <select formControlName="title" class="form-select"
           [class.is-invalid]="submitted && f['title'].errors">
           <option value=""></option>
           <option *ngFor="let t of ['Mr','Mrs','Ms','Dr']" [value]="t">{{t}}</option>
@@ -13,25 +15,27 @@
           <div *ngIf="f['title'].errors['required']">Title is required</div>
         </div>
       </div>
-      <div class="mb-3">
-        <label class="form-label">First Name</label>
-        <input type="text" formControlName="firstName" class="form-control"
-          [class.is-invalid]="submitted && f['firstName'].errors" />
-        <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
-          <div *ngIf="f['firstName'].errors['required']">First Name is required</div>
+      <div class="row">
+        <div class="col mb-3">
+          <label class="form-label">First Name</label>
+          <input type="text" formControlName="firstName" class="form-control" placeholder="First name"
+            [class.is-invalid]="submitted && f['firstName'].errors" />
+          <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+            <div *ngIf="f['firstName'].errors['required']">First Name is required</div>
+          </div>
         </div>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Last Name</label>
-        <input type="text" formControlName="lastName" class="form-control"
-          [class.is-invalid]="submitted && f['lastName'].errors" />
-        <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
-          <div *ngIf="f['lastName'].errors['required']">Last Name is required</div>
+        <div class="col mb-3">
+          <label class="form-label">Last Name</label>
+          <input type="text" formControlName="lastName" class="form-control" placeholder="Last name"
+            [class.is-invalid]="submitted && f['lastName'].errors" />
+          <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+            <div *ngIf="f['lastName'].errors['required']">Last Name is required</div>
+          </div>
         </div>
       </div>
       <div class="mb-3">
         <label class="form-label">Email</label>
-        <input type="text" formControlName="email" class="form-control"
+        <input type="text" formControlName="email" class="form-control" placeholder="you@example.com"
           [class.is-invalid]="submitted && f['email'].errors" />
         <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
           <div *ngIf="f['email'].errors['required']">Email is required</div>
@@ -39,8 +43,8 @@
         </div>
       </div>
       <div class="mb-3">
-        <label class="form-label">Password <em>(Leave blank to keep current password)</em></label>
-        <input type="password" formControlName="password" class="form-control"
+        <label class="form-label">Password <span style="color: var(--text-muted); font-weight: 400;">(leave blank to keep current)</span></label>
+        <input type="password" formControlName="password" class="form-control" placeholder="New password"
           [class.is-invalid]="submitted && f['password'].errors" />
         <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
           <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</div>
@@ -48,21 +52,24 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Confirm Password</label>
-        <input type="password" formControlName="confirmPassword" class="form-control"
+        <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Repeat password"
           [class.is-invalid]="submitted && f['confirmPassword'].errors" />
         <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
           <div *ngIf="f['confirmPassword'].errors['mustMatch']">Passwords must match</div>
         </div>
       </div>
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary" [disabled]="loading">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
-          Save
-        </button>
-        <a routerLink="/profile" class="btn btn-link">Cancel</a>
+      <div class="d-flex align-items-center justify-content-between" style="gap: 0.5rem; flex-wrap: wrap;">
+        <div>
+          <button type="submit" class="btn btn-primary" [disabled]="loading" style="min-width: 100px;">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+            Save
+          </button>
+          <a routerLink="/profile" class="btn btn-link">Cancel</a>
+        </div>
       </div>
     </form>
-    <div class="card-footer text-center">
+    <hr style="margin: 1.5rem 0;">
+    <div class="text-center">
       <button (click)="onDelete()" class="btn btn-danger" [disabled]="deleting">
         <span *ngIf="deleting" class="spinner-border spinner-border-sm me-1"></span>
         Delete Account

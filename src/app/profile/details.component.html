@@ -1,14 +1,24 @@
 <div class="card">
-  <h4 class="card-header">Profile</h4>
+  <div class="card-header">
+    <h4 style="margin: 0; font-size: 1rem;">Account Details</h4>
+  </div>
   <div class="card-body">
     <div *ngIf="account">
-      <div><strong>Title:</strong> {{account.title}}</div>
-      <div><strong>First Name:</strong> {{account.firstName}}</div>
-      <div><strong>Last Name:</strong> {{account.lastName}}</div>
-      <div><strong>Email:</strong> {{account.email}}</div>
-      <div><strong>Role:</strong> {{account.role}}</div>
-      <div><strong>Verified:</strong> {{account.isVerified ? 'Yes' : 'No'}}</div>
-      <a routerLink="update" class="btn btn-primary mt-3">Update Profile</a>
+      <div style="display: grid; grid-template-columns: 120px 1fr; gap: 0.75rem 1rem; font-size: 0.9rem;">
+        <span style="color: var(--text-muted);">Title</span>
+        <span>{{account.title}}</span>
+        <span style="color: var(--text-muted);">First Name</span>
+        <span>{{account.firstName}}</span>
+        <span style="color: var(--text-muted);">Last Name</span>
+        <span>{{account.lastName}}</span>
+        <span style="color: var(--text-muted);">Email</span>
+        <span>{{account.email}}</span>
+        <span style="color: var(--text-muted);">Role</span>
+        <span>{{account.role}}</span>
+        <span style="color: var(--text-muted);">Verified</span>
+        <span>{{account.isVerified ? 'Yes' : 'No'}}</span>
+      </div>
+      <a routerLink="update" class="btn btn-primary mt-4">Update Profile</a>
     </div>
   </div>
 </div>
