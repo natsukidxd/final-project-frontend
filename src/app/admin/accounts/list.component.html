@@ -1,27 +1,35 @@
-<h1>Accounts</h1>
-<p><a routerLink="add" class="btn btn-sm btn-success mb-2">Add Account</a></p>
-<table class="table table-striped">
+<div class="d-flex align-items-center justify-content-between" style="margin-bottom: 1.25rem;">
+  <h1 style="margin: 0;">Accounts</h1>
+  <a routerLink="add" class="btn btn-success btn-sm">+ Add Account</a>
+</div>
+
+<table class="table">
   <thead>
     <tr>
       <th>ID</th>
-      <th>Title</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Name</th>
       <th>Email</th>
       <th>Role</th>
       <th>Verified</th>
-      <th></th>
+      <th style="width: 140px;">Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let account of accounts">
-      <td>{{account.id}}</td>
-      <td>{{account.title}}</td>
-      <td>{{account.firstName}}</td>
-      <td>{{account.lastName}}</td>
-      <td>{{account.email}}</td>
-      <td>{{account.role}}</td>
-      <td>{{account.isVerified ? 'Yes' : 'No'}}</td>
+      <td style="color: var(--text-muted); font-size: 0.85rem;">{{account.id}}</td>
+      <td>{{account.title}} {{account.firstName}} {{account.lastName}}</td>
+      <td style="color: var(--text-secondary);">{{account.email}}</td>
+      <td>
+        <span class="badge" [style.background]="account.role === 'Admin' ? 'var(--accent-glow)' : 'var(--secondary-glow)'"
+              [style.color]="account.role === 'Admin' ? 'var(--accent)' : 'var(--secondary)'"
+              style="padding: 0.25em 0.6em; border-radius: 4px; font-weight: 500;">
+          {{account.role}}
+        </span>
+      </td>
+      <td>
+        <span *ngIf="account.isVerified" style="color: var(--secondary);">✓</span>
+        <span *ngIf="!account.isVerified" style="color: var(--text-muted);">—</span>
+      </td>
       <td style="white-space: nowrap">
         <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary me-1">Edit</a>
         <button (click)="deleteAccount(account.id!)" class="btn btn-sm btn-danger" [disabled]="account.isDeleting">
@@ -31,8 +39,8 @@
       </td>
     </tr>
     <tr *ngIf="!accounts">
-      <td colspan="8" class="text-center">
-        <span class="spinner-border spinner-border-lg align-center"></span>
+      <td colspan="6" class="text-center" style="padding: 2rem;">
+        <span class="spinner-border" style="width: 1.5rem; height: 1.5rem;" role="status"></span>
       </td>
     </tr>
   </tbody>
