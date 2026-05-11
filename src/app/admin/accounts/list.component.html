@@ -3,7 +3,7 @@
   <a routerLink="add" class="btn btn-success btn-sm">+ Add Account</a>
 </div>
 
-<table class="table">
+<table class="table" style="--bs-table-color: var(--text-primary); --bs-table-bg: transparent; --bs-table-hover-bg: var(--bg-hover);">
   <thead>
     <tr>
       <th>ID</th>
@@ -38,7 +38,7 @@
         </button>
       </td>
     </tr>
-    <tr *ngIf="!accounts">
+    <tr *ngIf="loading">
       <td colspan="6" class="text-center" style="padding: 2rem;">
         <span class="spinner-border" style="width: 1.5rem; height: 1.5rem;" role="status"></span>
       </td>
