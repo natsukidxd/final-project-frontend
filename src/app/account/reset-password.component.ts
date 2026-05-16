@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { finalize, first } from 'rxjs/operators';
+import { finalize, first, timeout, catchError } from 'rxjs/operators';
 import { AccountService, AlertService } from '@app/_services';
 import { MustMatch } from '@app/_helpers';
+import { of, throwError } from 'rxjs';
 
 enum TokenStatus {
   Validating,
@@ -28,7 +29,8 @@ export class ResetPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -47,13 +49,22 @@ export class ResetPasswordComponent implements OnInit {
     }
 
     this.accountService.validateResetToken(this.token)
-      .pipe(first())
+      .pipe(
+        timeout(10000),
+        catchError((err) => {
+          this.tokenStatus = TokenStatus.Invalid;
+          this.changeDetectorRef.detectChanges();
+          return throwError(() => err);
+        })
+      )
       .subscribe({
         next: () => {
           this.tokenStatus = TokenStatus.Valid;
+          this.changeDetectorRef.detectChanges();
         },
         error: () => {
           this.tokenStatus = TokenStatus.Invalid;
+          this.changeDetectorRef.detectChanges();
         }
       });
   }
