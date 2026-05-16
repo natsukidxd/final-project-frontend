@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { finalize, first } from 'rxjs/operators';
 import { AccountService, AlertService } from '@app/_services';
@@ -14,6 +15,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private router: Router,
     private accountService: AccountService,
     private alertService: AlertService
   ) {}
@@ -39,8 +41,9 @@ export class ForgotPasswordComponent implements OnInit {
         finalize(() => this.loading = false)
       )
       .subscribe({
-        next: () => {
-          this.alertService.success('Please check your email for password reset instructions');
+        next: (response: any) => {
+          this.alertService.success(response?.message || 'Please check your email for password reset instructions', { keepAfterRouteChange: true });
+          this.router.navigate(['/account/login']);
         },
         error: error => {
           this.alertService.error(error);

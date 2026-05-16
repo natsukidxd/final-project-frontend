@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { finalize, first } from 'rxjs/operators';
 import { AccountService, AlertService } from '@app/_services';
 import { MustMatch } from '@app/_helpers';
 
@@ -49,7 +49,10 @@ export class RegisterComponent implements OnInit {
     (window as any).alertService = this.alertService;
 
     this.accountService.register(this.form.value)
-      .pipe(first())
+      .pipe(
+        first(),
+        finalize(() => this.loading = false)
+      )
       .subscribe({
         next: () => {
           this.alertService.success('Registration successful, please check your email for verification instructions', { keepAfterRouteChange: true });
@@ -57,7 +60,6 @@ export class RegisterComponent implements OnInit {
         },
         error: error => {
           this.alertService.error(error);
-          this.loading = false;
         }
       });
   }
