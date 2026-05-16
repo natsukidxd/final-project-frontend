@@ -43,6 +43,7 @@ export class AccountService {
         tap(account => {
           this.accountSubject.next(account);
           this.startRefreshTokenTimer();
+          localStorage.setItem('isLoggedIn', 'true');
         })
       );
   }
@@ -66,6 +67,7 @@ export class AccountService {
     this.revokeToken().subscribe();
     this.stopRefreshTokenTimer();
     this.accountSubject.next(null);
+    localStorage.removeItem('isLoggedIn');
   }
 
   getAll() {
