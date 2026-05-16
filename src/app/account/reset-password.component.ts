@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { finalize, first } from 'rxjs/operators';
 import { AccountService, AlertService } from '@app/_services';
 import { MustMatch } from '@app/_helpers';
 
@@ -68,7 +68,10 @@ export class ResetPasswordComponent implements OnInit {
 
     this.loading = true;
     this.accountService.resetPassword(this.token, this.f['password'].value, this.f['confirmPassword'].value)
-      .pipe(first())
+      .pipe(
+        first(),
+        finalize(() => this.loading = false)
+      )
       .subscribe({
         next: () => {
           this.alertService.success('Password reset successful, you can now login', { keepAfterRouteChange: true });
@@ -76,7 +79,6 @@ export class ResetPasswordComponent implements OnInit {
         },
         error: error => {
           this.alertService.error(error);
-          this.loading = false;
         }
       });
   }
