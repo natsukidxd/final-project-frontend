@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { finalize, first } from 'rxjs/operators';
-import { AccountService, AlertService } from '@app/_services';
+import { finalize } from 'rxjs/operators';
+import { AccountService } from '@app/_services';
 
 @Component({
   templateUrl: './login.component.html',
@@ -12,13 +12,14 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
   loading = false;
   submitted = false;
+  errorMessage = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private alertService: AlertService
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -32,23 +33,27 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.alertService.clear();
-
+    this.errorMessage = '';
     if (this.form.invalid) return;
 
     this.loading = true;
+
     this.accountService.authenticate(this.f['email'].value, this.f['password'].value)
-      .pipe(
-        first(),
-        finalize(() => this.loading = false)
-      )
+      .pipe(finalize(() => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }))
       .subscribe({
         next: () => {
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           this.router.navigateByUrl(returnUrl);
         },
-        error: error => {
-          this.alertService.error(error);
+        error: (error: any) => {
+          let msg = 'Email or password is incorrect';
+          if (typeof error === 'string' && error) msg = error;
+          else if (error?.message) msg = error.message;
+          this.errorMessage = msg;
+          this.cdr.detectChanges();
         }
       });
   }
