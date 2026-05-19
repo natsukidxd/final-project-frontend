@@ -21,6 +21,12 @@
           <div *ngIf="f['password'].errors['required']">Password is required</div>
         </div>
       </div>
+
+      <!-- Inline error message -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
       <div class="d-flex align-items-center justify-content-between" style="gap: 0.5rem; flex-wrap: wrap;">
         <button type="submit" class="btn btn-primary" [disabled]="loading" style="min-width: 100px;">
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
